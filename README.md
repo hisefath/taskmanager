@@ -59,4 +59,28 @@ npm install bulma --save
 ``` 
 6. Imported bulma source files in src/styles.scss, and also created main-styles.scss for global styles
 
-7. 
+7. For angular components I will be making the following:
+ - task-view
+ - new-list
+ - edit-list
+ - new-task
+ - edit-task
+ - signup-page
+ - login-page
+ using the angular cli to generate my components, ie:
+ ```
+ng generate component pages/TaskView
+ng generate component <yourChoiceOfDirStructure>/<ComponentName>
+ ```
+8. All my routes are defined in app-routing-module.ts, ie:
+```
+const routes: Routes = [
+  { path: '', redirectTo: '/lists', pathMatch: 'full' },
+  { path: 'new-list', component: NewListComponent },
+  { path: 'edit-list/:listId', component: EditListComponent },
+  { etc... }
+];
+```
+and make sure to import those components in that file as well
+
+9.
