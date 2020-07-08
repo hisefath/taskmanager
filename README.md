@@ -92,8 +92,13 @@ and make sure to import those components in that file as well
 ```
 .
 ├── app.js
-├── db
+└── db
+    ├── models
+    │   ├── index.js
+    │   ├── list.model.js
+    │   └── task.model.js
     └── mongoose.js
+
 ```
 10. In MongoDB, make sure to have an account, create the m0 sandbox cluster build, create a database user with the correct permissions, and your good for mongoose to connect to mongodb atlas
 11. Don't leak sensitive info, use enviornment vars, im using dotenv to do so with
@@ -105,11 +110,30 @@ npm install dotenv --save-dev
 ```
 npm install body-parser --save
 ```
+and CORS Headers -> reference this amazing site: https://enable-cors.org/server.html
+```
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+```
+
 14. After all the api endpoints are made, we need to connect the angular frontend to our apis, and we do this is by creating an angular service
 ```
 ng generate service WebRequest
 ng generate service Task
 ng generate service <serviceName>
 ```
-Task service is responsible for modifying our list/task data in mongodb
-WebRequest service is responsible for handling all of our web requests (GET, POST, PATCH, DELETE)
+##### Task service is responsible for modifying our list/task data in mongodb
+##### WebRequest service is responsible for handling all of our web requests (GET, POST, PATCH, DELETE)
+
+15. I made sure that task service constructor takes in a private instance of type webreqservice, and with that, my task service methods can now have methods that utlizes these web reqs and responses with observables
+
+16. Now in the new-list component, I make sure to to inject a private instance of type taskService, and make a method called "createNewList. I use the method I made in taskService "createList" that returns an observable, and subscribe to that observable. Now the observer will react to when a user enters input ie: a new list title)
+
+17. Create List button needs event binding -> (click)="< methodname>(< variable>.value) and the input is a template reference variable, made with a #variable and is an attribute of the input tag ix: below
+```
+<input #listTitleInput class="swag" placeholder="Enter new list name...">
+  <button class="swag" (click)="createNewList(listTitleInput.value)">Create</button>
+```

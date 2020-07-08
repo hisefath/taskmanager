@@ -13,7 +13,12 @@ $light: #f8f8f8;
 //Updating Bulma's global variables
 $family-san-serif: "Nunito", san-serif;
 $primary: $green;
+
+//bulma var isnt getting updated for some reason???
 $link: $turquoise;
+a {
+  color: $turquoise;
+}
 
 //Updating some of Bulma's Components
 $control-border-width: 2px;
@@ -26,5 +31,13 @@ html {
 }
 
 html, body {
+  height: 100%;
+}
+
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   height: 100%;
 }
