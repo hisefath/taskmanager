@@ -1,5 +1,14 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+ 
+const mongoose = require('./db/mongoose');
+
+/*---Load Middleware---*/
+app.use(bodyParser.json());
+
+/* ---Load Mongoose Models--*/
+const { List, Task } = require('./db/models');
 
 /* -----ROUTE HANDLERS-----*/
 
@@ -11,7 +20,9 @@ const app = express();
  * Return: Array of all lists
  */
 app.get('/lists', (req, res) => {
-    //todo
+    List.find({}).then((lists) => {
+        res.send(lists);
+    });
 });
 
 /**
@@ -20,7 +31,14 @@ app.get('/lists', (req, res) => {
  * Return: New list document 
  */
 app.post('/lists', (req, res) => {
-    //todo
+    let title = req.body.title;
+    let newList = new List({
+        title
+    });
+    newList.save().then((listDoc) => {
+        //full list document is returned
+        res.send(listDoc);
+    });
 });
 
 /**

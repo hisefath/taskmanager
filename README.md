@@ -26,6 +26,11 @@ As of July 7th, 2020, the technologies, softwares, and applications used to faci
  - Nutribullet (awesome smoothie maker ^o^)
 
 ------
+------
+------
+------
+------
+------
 ## DevNotes
 *I'm working on a Mac*
 But to get started: 
@@ -91,3 +96,13 @@ and make sure to import those components in that file as well
     └── mongoose.js
 ```
 10. In MongoDB, make sure to have an account, create the m0 sandbox cluster build, create a database user with the correct permissions, and your good for mongoose to connect to mongodb atlas
+11. Don't leak sensitive info, use enviornment vars, im using dotenv to do so with
+```
+npm install dotenv --save-dev
+```
+12. Make sure to add your .env file to your .gitignore lol
+13. When you're coding you're api endpoints , make sure you install the proper middleware to handle the http reqs, ie: body parser
+```
+npm install body-parser --save
+```
+
