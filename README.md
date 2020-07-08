@@ -105,4 +105,11 @@ npm install dotenv --save-dev
 ```
 npm install body-parser --save
 ```
-
+14. After all the api endpoints are made, we need to connect the angular frontend to our apis, and we do this is by creating an angular service
+```
+ng generate service WebRequest
+ng generate service Task
+ng generate service <serviceName>
+```
+Task service is responsible for modifying our list/task data in mongodb
+WebRequest service is responsible for handling all of our web requests (GET, POST, PATCH, DELETE)
