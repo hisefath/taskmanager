@@ -83,4 +83,11 @@ const routes: Routes = [
 ```
 and make sure to import those components in that file as well
 
-9.
+9. Now for notes on a bit of our backend, we have an api folder that we'll hold code that leverages express.js to make our api endpoints and also communicates with mongodb. Here's a look at our directory structure:
+```
+.
+├── app.js
+├── db
+    └── mongoose.js
+```
+10. In MongoDB, make sure to have an account, create the m0 sandbox cluster build, create a database user with the correct permissions, and your good for mongoose to connect to mongodb atlas
