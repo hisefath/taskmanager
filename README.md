@@ -3,10 +3,8 @@ A Full stack web development practice with MongoDB, Express.js, Angular.js, Node
 A task manager app the builds to do lists with basic crud implementation
 
 ## Live Demo
-Live Demo will be launched to Heroku around midnight tonight, July 6th, 2020. 
-//The Quarintine Projects
-//Single Day Full-Stack App Challenge
-//Disclaimer* following DevStackR and making my on twists to it from his project guide (He's teaching mean stack on youtube)
+Live Demo will be launched to Heroku by friday night, July 10th, 2020. 
+
 
 ## Project Purpose
 The motives behind this are as follow:
@@ -25,6 +23,8 @@ As of July 7th, 2020, the technologies, softwares, and applications used to faci
  - Node.js (backend framework)
  - Nutribullet (awesome smoothie maker ^o^)
 
+ //Disclaimer* following DevStackR and making my on twists to it from his project guide (He's teaching mean stack on youtube)
+
 ------
 ------
 ------
@@ -36,8 +36,9 @@ As of July 7th, 2020, the technologies, softwares, and applications used to faci
 But to get started: 
 1. I'm using 
 - MongoDB shell version v4.2.8
-- Express v
-- Angular 10.0.1
+- Express v4.17.1
+- Angular v10.0.1
+- Node v10.16.3
 2. Firstly made some space on my workbench with a new directory
 ```
 cd /Documents/Workbench/<repoName>
@@ -85,6 +86,10 @@ const routes: Routes = [
   { path: 'edit-list/:listId', component: EditListComponent },
   { etc... }
 ];
+
+and my components travel to these roots using routerlink ie:
+ <button routerLink="./new-task"> Click to make new task</button>
+https://angular.io/api/router/RouterLink
 ```
 and make sure to import those components in that file as well
 
