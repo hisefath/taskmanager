@@ -11,7 +11,9 @@ app.use(bodyParser.json());
 //https://enable-cors.org/server.html
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id");
+
     next();
 });
 
@@ -59,7 +61,7 @@ app.patch('/lists/:id', (req, res) => {
     List.findOneAndUpdate({ _id: req.params.id }, {
         $set: req.body
     }).then(() => {
-        res.sendStatus(200);
+        res.send({ message: 'updated successfully' });
     });
 });
 
@@ -132,7 +134,7 @@ app.patch('/lists/:listId/tasks/:taskId', (req, res) => {
     }, {
         $set: req.body
     }).then(() => {
-        res.sendStatus(200);
+        res.send({ message: 'updated successfully' });
     });
 });
 
