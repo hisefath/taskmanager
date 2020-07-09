@@ -19,15 +19,12 @@
       <h1 class="title has-text-primary">
         Task
       </h1>
-      <div class="task completed">
-        <p >Example</p>
-      </div>
       <div class="task" *ngFor="let task of tasks">
         <p> {{ task.title }} </p>
       </div>
 
-      <button class=" button circle-add-button has-text-white is-primary">
-        <img src="../../../assets/plus-icon.svg" alt="">
+      <button routerLink="./new-task"  class=" button circle-add-button has-text-white is-primary">
+        <img src="../../../assets/plus-icon.svg">
       </button>
     </div>
   </div>
