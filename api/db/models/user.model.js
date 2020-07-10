@@ -95,10 +95,15 @@ UserSchema.statics.findByIdAndToken = function(_id, token) {
     //finds user by id and token
     //used in auth middleware (verifySession)
     const User = this;
+    // return User.findByCredentials('hi1@gmail.com', 'helloman');
+    // console.log(_id);
+    // console.log(token);
     return User.findOne({
         _id, 
         'sessions.token': token
     });
+    // // console.log(user);
+    // return user;
 }
 
 UserSchema.statics.findByCredentials = function (email, password) {
