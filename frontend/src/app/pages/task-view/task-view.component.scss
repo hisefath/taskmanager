@@ -86,3 +86,14 @@
   border: none;
   border-radius: 50%;
 }
+
+.empty-state-text {
+  font-size: 18px;
+  color: rgb(143, 143, 143);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5px;
+  margin-top: 22px;
+}

@@ -19,15 +19,25 @@
       <h1 class="title has-text-primary">
         Task
       </h1>
+      <div *ngIf="tasks">
+  
+        <!-- Task Elements -->
+        <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{ 'completed': task.completed }">
+          <p> {{ task.title }} </p>
+        </div>
+  
+        <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the + button to create
+          a new task.</h3>
 
-      <!-- Task Elements -->
-      <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{ 'completed': task.completed }">
-        <p> {{ task.title }} </p>
+        <button routerLink="./new-task"  class=" button circle-add-button has-text-white is-primary">
+          <img src="../../../assets/plus-icon.svg">
+        </button>
       </div>
 
-      <button routerLink="./new-task"  class=" button circle-add-button has-text-white is-primary">
-        <img src="../../../assets/plus-icon.svg">
-      </button>
+      <div *ngIf="!tasks">
+        <h3 class="empty-state-text">Welcome, please select a list from the sidebar.</h3>
+      </div>
+
     </div>
   </div>
 </div>
