@@ -157,4 +157,9 @@ ng generate service Auth
 
 20. Authservice has httpclient, router and our custom webRequestService injected into it, and here I have methods to login logout, set session and remove session (in local storage), in webrequest service, I made sure to make a method that returns http.POST to the route where I have users login. Last but not least, I then my onclick method in my login view, and in my component.ts file i made a method that calls the injected authService to do the login work. whew.
 
-21. Next up I need Http interceptors to append the access tokens to the header
+21. Next up I need Http interceptors to append the access tokens to the header for every other request, so we can use it for tihngs like to load user specific list docs and tasks docs from the database
+```
+ng generate service WebRequestInterceptor
+```
+
+22. Next I have to set up protected routes, and make sure my app's list/task routes can only access after a user has been authenticated

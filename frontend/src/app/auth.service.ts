@@ -28,11 +28,22 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  
   private setSession(userId: string, accessToken: string, refreshToken: string) {
     localStorage.setItem('user-id', userId);
     localStorage.setItem('x-access-token', accessToken);
     localStorage.setItem('x-refresh-token', refreshToken);
+  }
+
+  getAccessToken() {
+    return localStorage.getItem('x-access-token');
+  }
+
+  getRefreshToken() {
+    return localStorage.getItem('x-refresh-token');
+  }
+
+  setAccessToken(accessToken: string ) {
+    localStorage.setItem('x-access-token', accessToken);
   }
 
   private removeSession() {
@@ -40,6 +51,5 @@ export class AuthService {
     localStorage.removeItem('x-access-token');
     localStorage.removeItem('x-refresh-token');
   }
-
 
 }
