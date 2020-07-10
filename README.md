@@ -149,3 +149,12 @@ npm install lodash --save
 npm install jsonwebtoken --save
 npm install bcryptjs --save
 ```
+
+19. After hours of learning and headache, backend code for auth is finally understood and implemented, now we have to make a service in our front end to connect it to out back end auth
+```
+ng generate service Auth
+```
+
+20. Authservice has httpclient, router and our custom webRequestService injected into it, and here I have methods to login logout, set session and remove session (in local storage), in webrequest service, I made sure to make a method that returns http.POST to the route where I have users login. Last but not least, I then my onclick method in my login view, and in my component.ts file i made a method that calls the injected authService to do the login work. whew.
+
+21. Next up I need Http interceptors to append the access tokens to the header
