@@ -137,8 +137,15 @@ ng generate service <serviceName>
 
 16. Now in the new-list component, I make sure to to inject a private instance of type taskService, and make a method called "createNewList. I use the method I made in taskService "createList" that returns an observable, and subscribe to that observable. Now the observer will react to when a user enters input ie: a new list title)
 
-17. Create List button needs event binding -> (click)="< methodname>(< variable>.value) and the input is a template reference variable, made with a #variable and is an attribute of the input tag ix: below
+17. Create List button needs event binding -> (click)="methodname(variable.value) and the input is a template reference variable, made with a #variable and is an attribute of the input tag ie: below
 ```
 <input #listTitleInput class="swag" placeholder="Enter new list name...">
   <button class="swag" (click)="createNewList(listTitleInput.value)">Create</button>
+```
+
+18. For User Authentication, I am going with JSON Web Tokens and a way to refresh the user token every 15mins for their session to be valid. Need dependancies like lodash, JWT, etc.
+```
+npm install lodash --save
+npm install jsonwebtoken --save
+npm install bcryptjs --save
 ```
