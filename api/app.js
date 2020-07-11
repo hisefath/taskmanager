@@ -237,7 +237,7 @@ app.post('/lists/:listId/tasks', authenticate, (req, res) => {
 app.patch('/lists/:listId/tasks/:taskId', authenticate, (req, res) => {
     List.findOne({ 
         _id: req.params._listId,
-        _userId: user_id
+        _userId: req.user_id
     }).then((list) => {
         //authenticated user can access this list
         if(list){
@@ -269,7 +269,7 @@ app.patch('/lists/:listId/tasks/:taskId', authenticate, (req, res) => {
 app.delete('/lists/:listId/tasks/:taskId', authenticate, (req, res) => {
     List.findOne({ 
         _id: req.params._listId,
-        _userId: user_id
+        _userId: req.user_id
     }).then((list) => {
         //authenticated user can access this list
         if(list){

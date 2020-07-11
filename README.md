@@ -162,4 +162,6 @@ ng generate service Auth
 ng generate service WebRequestInterceptor
 ```
 
-22. Next I have to set up protected routes, and make sure my app's list/task routes can only access after a user has been authenticated
+22. Next I have to set up protected routes, and make sure my app's list/task routes can only access after a user has been authenticated. For this I code a function to be used as authentication middleware, and apply it to my routes, and add some extra checks in those routes that check if the list doc the user is trying to access belongs to the user thats trying to access it.
+
+23. Now I will use the httpinterceptor to actually append the accesstoken

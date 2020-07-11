@@ -54,4 +54,10 @@ html, body {
   letter-spacing: 2px;
 }
 
+.white-box {
+  padding: 35px;
+  background: white;
+  border-radius: 5px;
+}
+
 @import '../node_modules/bulma/bulma.sass';
