@@ -2,9 +2,7 @@
   "name": "mytudo",
   "version": "0.0.0",
   "scripts": {
-    "start": "node server.js",
-    "build": "ng build",
-    "ng": "ng"
+    "start": "node server.js"
   },
   "private": true,
   "dependencies": {
