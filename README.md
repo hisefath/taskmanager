@@ -4,7 +4,6 @@ A task manager app the builds to do lists with basic crud implementation
 
 ## Live Demo
 Live Demo will be launched to Heroku by friday night, July 10th, 2020. 
-It's Friday night, and here it is: http://mytudo.herokuapp.com/
 
 
 ## Project Purpose
@@ -99,11 +98,11 @@ and make sure to import those components in that file as well
 .
 ├── app.js
 └── db
-    ├── models
-    │   ├── index.js
-    │   ├── list.model.js
-    │   └── task.model.js
-    └── mongoose.js
+    ├── models
+    │   ├── index.js
+    │   ├── list.model.js
+    │   └── task.model.js
+    └── mongoose.js
 
 ```
 10. In MongoDB, make sure to have an account, create the m0 sandbox cluster build, create a database user with the correct permissions, and your good for mongoose to connect to mongodb atlas
