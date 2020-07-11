@@ -36,6 +36,44 @@ export class TaskService {
   }
 
   /**
+   * Updates active list title
+   * Paramter: title
+   * Returns observable
+   */
+  updateList(id: string, title: string) {
+    // We want to send a web request to update a list
+    return this.webReqService.patch(`lists/${id}`, { title });
+  }
+
+    /**
+   * Updates task
+   * Paramter: title
+   * Returns observable
+   */
+  updateTask(listId: string, taskId: string, title: string) {
+    // We want to send a web request to update a list
+    return this.webReqService.patch(`lists/${listId}/tasks/${taskId}`, { title });
+  }
+
+  /**
+   * Deletes task for the active list
+   * Paramter: title
+   * Returns observable
+   */
+  deleteTask(listId: string, taskId: string) {
+    return this.webReqService.delete(`lists/${listId}/tasks/${taskId}`);
+  }
+
+  /**
+   * Deletes active list
+   * Paramter: title
+   * Returns observable
+   */
+  deleteList(id: string) {
+    return this.webReqService.delete(`lists/${id}`);
+  }
+
+  /**
    * Gets all tasks for the  Active List
    * Returns observable
    */

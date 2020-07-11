@@ -230,61 +230,66 @@ app.post('/lists/:listId/tasks', authenticate, (req, res) => {
 });
 
 /**
- * Patch /lists/:listId/tasks/:taskId
- * Purpose: Update a task in specified list
- * Return: http200
+ * PATCH /lists/:listId/tasks/:taskId
+ * Purpose: Update an existing task
  */
 app.patch('/lists/:listId/tasks/:taskId', authenticate, (req, res) => {
-    List.findOne({ 
-        _id: req.params._listId,
+    // We want to update an existing task (specified by taskId)
+    List.findOne({
+        _id: req.params.listId,
         _userId: req.user_id
     }).then((list) => {
-        //authenticated user can access this list
-        if(list){
+        if (list) {
+            // list object with the specified conditions was found
+            // therefore the currently authenticated user can make updates to tasks within this list
             return true;
-        } else {
-            return false;
         }
-    }).then((canUpdateTasksInThisList)=>{
-        if(canUpdateTasksInThisList){
-            Task.findOneAndUpdate({ 
+        // else - the list object is undefined
+        return false;
+    }).then((canUpdateTasks) => {
+        if (canUpdateTasks) {
+            // the currently authenticated user can update tasks
+            Task.findOneAndUpdate({
                 _id: req.params.taskId,
                 _listId: req.params.listId
             }, {
-                $set: req.body
-            }).then(() => {
-                res.send({ message: 'updated successfully' });
-            });
+                    $set: req.body
+                }
+            ).then(() => {
+                res.send({ message: 'Updated successfully.' })
+            })
         } else {
             res.sendStatus(404);
         }
-    });
+    })
 });
 
 /**
  * DELETE /lists/:listId/tasks/:taskId
- * Purpose: Delete a task in specified list
- * Return: Deleted task doc
+ * Purpose: Delete a task
  */
 app.delete('/lists/:listId/tasks/:taskId', authenticate, (req, res) => {
-    List.findOne({ 
-        _id: req.params._listId,
+
+    List.findOne({
+        _id: req.params.listId,
         _userId: req.user_id
     }).then((list) => {
-        //authenticated user can access this list
-        if(list){
+        if (list) {
+            // list object with the specified conditions was found
+            // therefore the currently authenticated user can make updates to tasks within this list
             return true;
-        } else {
-            return false;
         }
-    }).then((canDeleteTasksInThisList)=>{
-        if(canDeleteTasksInThisList){
-            Task.findOneAndRemove( { 
-                _id: req.params.taskId, 
-                _listId: req.params.listId 
+        // else - the list object is undefined
+        return false;
+    }).then((canDeleteTasks) => {
+        
+        if (canDeleteTasks) {
+            Task.findOneAndRemove({
+                _id: req.params.taskId,
+                _listId: req.params.listId
             }).then((removedTaskDoc) => {
                 res.send(removedTaskDoc);
-            });
+            })
         } else {
             res.sendStatus(404);
         }

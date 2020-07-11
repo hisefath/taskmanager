@@ -3,6 +3,7 @@
 // Import Fonts: Lato and Nunito
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700|Nunito:400,700');
 
+
 //Main color palatte
 $turquoise: #44ddd0;
 $green: #27d7a1;
@@ -59,5 +60,10 @@ html, body {
   background: white;
   border-radius: 5px;
 }
+
+$dropdown-item-hover-background-color: white;
+$dropdown-item-hover-color: Black;
+$dropdown-content-offset: 6px;
+
 
 @import '../node_modules/bulma/bulma.sass';
