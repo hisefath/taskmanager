@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
- 
+const path = require('path');
 const mongoose = require('./db/mongoose');
 
+//configure static directory
+app.use(express.static(path.join(__dirname, "frontend")));
 
 /* ---Load Mongoose Models--*/
 const { List, Task, User } = require('./db/models');
@@ -14,6 +16,7 @@ const jwt = require('jsonwebtoken');
 //Response BodyParser Middleware
 app.use(bodyParser.json());
 //Cross-Origin Resource Sharing Middleware
+//Needed for dev, as i ran frontend in 4200 and backend in 3000
 //https://enable-cors.org/server.html
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
