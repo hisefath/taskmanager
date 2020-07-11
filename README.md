@@ -4,6 +4,7 @@ A task manager app the builds to do lists with basic crud implementation
 
 ## Live Demo
 Live Demo will be launched to Heroku by friday night, July 10th, 2020. 
+It's Friday night, and here it is: http://mytudo.herokuapp.com/
 
 
 ## Project Purpose
