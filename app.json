@@ -1,0 +1,21 @@
+{
+    "name": "mytudo app",
+    "description": "Mean stack to do app",
+    "keywords": [
+      "MEAN",
+      "Angular",
+      "Node",
+      "MongoDB",
+      "mLab"
+    ],
+    "repository": "https://github.com/Shefuchow/taskmanager",
+    "success_url": "/",
+    "formation": {
+      "web": {
+        "quantity": 1,
+        "size": "free"
+      }
+    },
+    "addons": [
+    ]
+  }
