@@ -1,6 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
+  "start": "node server.js",
   "description": "backend of this mean stack app",
   "main": "index.js",
   "scripts": {
