@@ -1,4 +1,5 @@
-require('../node_modules/dotenv/config');
+// DEV ENV VARS
+// require('../node_modules/dotenv/config');
 
 // This file will handle connection logic to MongoDB Database
 const mongoose = require ('mongoose');
