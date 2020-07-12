@@ -4,7 +4,8 @@ A task manager app the builds to do lists with basic crud implementation
 
 ## Live Demo
 Live Demo will be launched to Heroku by friday night, July 10th, 2020. 
-
+It's Friday night, and here it is: http://mytudo.herokuapp.com/
+Test users and all provided in navbar, or feel free to sign up!
 
 ## Project Purpose
 The motives behind this are as follow:
@@ -13,14 +14,19 @@ The motives behind this are as follow:
  - Establish best practices, good mvc architecture and extera seperations of concerns
  - Have super clean code to show recruiters/interviewers in the future
 
+## Author
+**Sefath Chowdhury** - [linkedin](https://www.linkedin.com/in/callmesefath/)
+
+## Built With
+* [Angular](https://angularjs.org/) - The front-end framework used
+* [Mongo](https://docs.mongodb.com/manual/) - Mongo DB database
+* [NODE](https://nodejs.org/en/) - JavaScript runtime for server and has a package manager (NPM)  
+* [Express](https://expressjs.com/) - Web Framework for Node.js
+
 ## Tools Used
 As of July 7th, 2020, the technologies, softwares, and applications used to facilitate this project are as follows:
  - Github (version control)
  - Visual Studio Code (code editor)
- - Mongodb (database for models)
- - Express.js (backend routing, api builds)
- - Angular (front-end)
- - Node.js (backend framework)
  - Nutribullet (awesome smoothie maker ^o^)
 
  //Disclaimer* following DevStackR and making my on twists to it from his project guide (He's teaching mean stack on youtube)
