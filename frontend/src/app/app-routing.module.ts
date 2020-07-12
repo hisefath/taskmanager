@@ -7,9 +7,11 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { EditListComponent } from './pages/edit-list/edit-list.component';
 import { EditTaskComponent } from './pages/edit-task/edit-task.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'lists', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomePageComponent },
   { path: 'new-list', component: NewListComponent },
   { path: 'edit-list/:listId', component: EditListComponent },
   { path: 'login', component: LoginPageComponent },
