@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const {Schema, model, Types} = require('mongoose');
 
-const ListSchema = new mongoose.Schema({
+const ListSchema = new Schema({
     title: {
         type: String, 
         required: true,
@@ -9,10 +9,10 @@ const ListSchema = new mongoose.Schema({
     },    
     // with auth
     _userId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         required: true
     }
 });
 
-const List = mongoose.model('list', ListSchema);
-module.exports = { List };
+const List = model('list', ListSchema);
+module.exports = List;

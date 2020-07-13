@@ -2,16 +2,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
-const port = 3000;
 /* ---Load Mongoose Models--*/
-const {
-    List,
-    Task,
-    User
-} = require('./db/models');
-const {
-    verify
-} = require('./functions/promisifiedFunctions');
+const { List, Task, User } = require('./db/models');
+
+const { verify } = require('./functions/promisifiedFunctions');
+const port = 3000;
 
 /*---Load Middleware---*/
 

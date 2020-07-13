@@ -1,0 +1,24 @@
+{
+  "name": "taskmanager",
+  "version": "1.0.0",
+  "description": "A Full stack web development practice with MongoDB, Express.js, Angular.js, Node.js\r A task manager app the builds to do lists with basic crud implementation",
+  "main": "null",
+  "scripts": {
+    "start": "concurrently \"cd api && npm run start\" \"cd frontend && npm run start\"",
+    "custom-install": "concurrently \"cd api && npm install\" \"cd frontend && npm install\"",
+    "lint": "npx eslint api/ --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shefuchow/taskmanager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shefuchow/taskmanager/issues"
+  },
+  "homepage": "https://github.com/Shefuchow/taskmanager#readme",
+  "dependencies": {
+    "concurrently": "^5.2.0"
+  }
+}

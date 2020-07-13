@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
-const TaskSchema = new mongoose.Schema({
+const TaskSchema = new Schema({
     title: {
         type: String, 
         required: true,
@@ -8,7 +8,7 @@ const TaskSchema = new mongoose.Schema({
         trim: true
     },
     _listId: {
-        type: mongoose.Types.ObjectId,
+        type: Types.ObjectId,
         required: true
     },
     completed: {
@@ -17,5 +17,5 @@ const TaskSchema = new mongoose.Schema({
     }
 });
 
-const Task = mongoose.model('task', TaskSchema);
-module.exports = { Task };
+const Task = model('task', TaskSchema);
+module.exports = Task;
