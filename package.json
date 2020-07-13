@@ -5,7 +5,7 @@
   "main": "null",
   "scripts": {
     "start": "concurrently \"cd api && npm run start\" \"cd frontend && npm run start\"",
-    "custom-install": "concurrently \"cd api && npm install\" \"cd frontend && npm install\"",
+    "postinstall": "cd api && npm install && cd .. && cd frontend && npm install",
     "lint": "npx eslint api/ --fix"
   },
   "repository": {
