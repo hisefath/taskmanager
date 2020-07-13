@@ -15,10 +15,6 @@
         "array-callback-return": "warn",
         "array-element-newline": "warn",
         "arrow-body-style": "off",
-        "arrow-parens": [
-            "warn",
-            "always"
-        ],
         "arrow-spacing": "off",
         "block-scoped-var": "warn",
         "block-spacing": "warn",
@@ -140,7 +136,7 @@
         "no-extra-label": "warn",
         "no-extra-parens": "warn",
         "no-floating-decimal": "warn",
-        "no-implicit-coercion": "warn",
+        "no-implicit-coercion": "off",
         "no-implicit-globals": "warn",
         "no-implied-eval": "warn",
         "no-inline-comments": "off",
@@ -188,7 +184,7 @@
         "no-shadow": "warn",
         "no-spaced-func": "warn",
         "no-sync": "warn",
-        "no-tabs": "warn",
+        "no-tabs": "off",
         "no-template-curly-in-string": "warn",
         "no-throw-literal": "warn",
         "no-trailing-spaces": "off",

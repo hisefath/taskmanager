@@ -19,17 +19,19 @@ const {
 app.use(bodyParser.json());
 //Cross-Origin Resource Sharing Middleware
 //https://enable-cors.org/server.html
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id");
+app.use((_, res, next) => {
+    res.header({
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE",
+        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id"
+    }); // update to match the domain you will make the request from
 
     res.header(
         'Access-Control-Expose-Headers',
         'x-access-token, x-refresh-token'
     );
 
-    next();
+    return next();
 });
 
 
@@ -44,7 +46,7 @@ let authenticate = async (req, res, next) => {
         // jwt is valid
         // eslint-disable-next-line require-atomic-updates
         req.user_id = decoded._id;
-        next();
+        return next();
     } catch (e) {
         // there was an error
         // jwt is invalid - * DO NOT AUTHENTICATE *
@@ -74,18 +76,11 @@ let verifySession = async (req, res, next) => {
         req.userObject = user;
         req.refreshToken = refreshToken;
 
-        let isSessionValid = false;
-
-        user.sessions.forEach((session) => {
-            if (session.token === refreshToken) {
-                // check if the session has expired
-                isSessionValid = Boolean(User.hasRefreshTokenExpired(session.expiresAt))
-            }
-        });
+        let isSessionValid = user.sessions.some(session => session.token === refreshToken) ? !!User.hasRefreshTokenExpired(user.sessions.find(session => session.token === refreshToken).expiresAt) : false;
 
         if (isSessionValid) {
             // the session is VALID - call next() to continue with processing this web request
-            next();
+            return next();
         } else {
             // the session is not valid
             throw new Error('Refresh token has expired or the session is invalid')
@@ -109,7 +104,7 @@ let verifySession = async (req, res, next) => {
 app.get('/lists', authenticate, async (req, res) => {
     // We want to return an array of all the lists that belong to the authenticated user 
     try {
-        res.send(await List.find({
+        return res.send(await List.find({
             "_userId": req.user_id
         }))
     } catch (err) {
@@ -127,7 +122,7 @@ app.post('/lists', authenticate, async (req, res) => {
         "title": req.body.title,
         "_userId": req.user_id
     });
-    res.send(await newList.save());
+    return res.send(await newList.save());
 });
 
 /**
@@ -144,7 +139,7 @@ app.patch('/lists/:id', authenticate, async (req, res) => {
         }, {
             "$set": req.body
         })
-        res.send({
+        return res.send({
             "message": 'updated successfully'
         });
     } catch (e) {
@@ -179,7 +174,7 @@ app.delete('/lists/:id', authenticate, async (req, res) => {
  * Return: Array of all tasks
  */
 app.get('/lists/:listId/tasks', authenticate, async (req, res) => {
-    res.send(await Task.find({
+    return res.send(await Task.find({
         "_listId": req.params.listId
     }));
 });
@@ -190,7 +185,7 @@ app.get('/lists/:listId/tasks', authenticate, async (req, res) => {
  * Return: Specified task doc
  */
 app.get('/lists/:listId/tasks/:taskId', authenticate, async (req, res) => {
-    res.send(await Task.findOne({
+    return res.send(await Task.findOne({
         "_id": req.params.taskId,
         "_listId": req.params.listId
     }))
@@ -212,11 +207,9 @@ app.post('/lists/:listId/tasks', authenticate, async (req, res) => {
             "title": req.body.title,
             "_listId": req.params.listId
         });
-        newTask.save().then((newTaskDoc) => {
-            res.send(newTaskDoc);
-        });
+        return res.send(await newTask.save())
     } else {
-        res.sendStatus(404);
+        return res.sendStatus(404);
     }
 });
 
@@ -238,7 +231,7 @@ app.patch('/lists/:listId/tasks/:taskId', authenticate, async (req, res) => {
         }, {
             "$set": req.body
         })
-        res.send({
+        return res.send({
             "message": 'Updated successfully.'
         });
     } else {
@@ -252,18 +245,17 @@ app.patch('/lists/:listId/tasks/:taskId', authenticate, async (req, res) => {
  * Purpose: Delete a task
  */
 app.delete('/lists/:listId/tasks/:taskId', authenticate, async (req, res) => {
-
     let list = await List.findOne({
         "_id": req.params.listId,
         "_userId": req.user_id
     });
     if (list) {
-        res.send(await Task.findOneAndRemove({
+        return res.send(await Task.findOneAndRemove({
             "_id": req.params.taskId,
             "_listId": req.params.listId
         }));
     } else {
-        res.sendStatus(404);
+        return res.sendStatus(404);
     }
 });
 
@@ -277,31 +269,23 @@ app.delete('/lists/:listId/tasks/:taskId', authenticate, async (req, res) => {
  * Purpose: Create user
  * Return: User document
  */
-app.post('/users/signup', (req, res) => {
+app.post('/users/signup', async (req, res) => {
     //user sign up
     let newUser = new User(req.body);
-    newUser.save().then(() => {
-        return newUser.createSession();
-    }).then((refreshToken) => {
+    try {
+        let refreshToken = (await newUser.save()).createSession();
+        let accessToken = await newUser.generateAccessAuthToken();
         //session created successfully - refresh token also returned
         //now we have to generate access auth token for the user
-        return newUser.generateAccessAuthToken().then((accessToken) => {
-            //access auth token generated successfully
-            return {
-                accessToken,
-                refreshToken
-            };
-        });
-    }).then((authTokens) => {
         //now we construct and send the response to the user with their
         //auth token in header, and the user object in the body
-        res
-            .header('x-refresh-token', authTokens.refreshToken)
-            .header('x-access-token', authTokens.accessToken)
-            .send(newUser);
-    }).catch((err) => {
+        res.header({
+            'x-refresh-token': refreshToken,
+            'x-access-token': accessToken
+        }).send(newUser);
+    } catch(err) {
         res.status(400).send(err);
-    });
+    }
 });
 
 /**
@@ -309,47 +293,38 @@ app.post('/users/signup', (req, res) => {
  * Purpose: Login user
  * Return: User document and redirect to taskview
  */
-app.post('/users/login', (req, res) => {
+app.post('/users/login', async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
+    try {
+        let user = await User.findByCredentials(email, password);
+        let refreshToken = await user.createSession()
+        //Session created successfully - refreshToken returned
+        //now we generate an access auth token for the user
+        let accessToken = await user.generateAccessAuthToken()
 
-    User.findByCredentials(email, password).then((user) => {
-        return user.createSession().then((refreshToken) => {
-            //Session created successfully - refreshToken returned
-            //n ow we generate an access auth token for the user
-
-            return user.generateAccessAuthToken().then((accessToken) => {
-                //access auth token generated successfully, 
-                //now we return an object containing the auth token
-                return {
-                    accessToken,
-                    refreshToken
-                }
-            });
-        }).then((authTokens) => {
-            res
-                .header('x-refresh-token', authTokens.refreshToken)
-                .header('x-access-token', authTokens.accessToken)
-                .send(user);
-        });
-    }).catch((err) => {
+        res.header({
+            'x-refresh-token': refreshToken,
+            'x-access-token': accessToken
+        }).send(user);
+    } catch (err) {
         res.status(400).send(err);
-    });
+    }
 });
 
 /**
  * GET /users/me/access-token
  * Purpose: generates and returns an access token
+ * Mark
  */
-app.get('/users/me/access-token', verifySession, (req, res) => {
-    // we know that the user/caller is authenticated and we have the user_id and user object available to us
-    req.userObject.generateAccessAuthToken().then((accessToken) => {
-        res.header('x-access-token', accessToken).send({
-            accessToken
-        });
-    }).catch((e) => {
-        res.status(400).send(e);
-    });
+app.get('/users/me/access-token', verifySession, async (req, res) => {
+    try {
+        // we know that the user/caller is authenticated and we have the user_id and user object available to us
+        let accessToken = await req.userObject.generateAccessAuthToken()
+        res.header('x-access-token', accessToken).send({ accessToken });
+    } catch(err) {
+        res.status(400).send(err);
+    }
 });
 
 /* HELPER METHODS */
