@@ -1,16 +1,16 @@
-const {Schema, model, Types} = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 const ListSchema = new Schema({
-    title: {
-        type: String, 
-        required: true,
-        minlength: 1, 
-        trim: true
+    "title": {
+        "type": String, 
+        "required": true,
+        "minlength": 1, 
+        "trim": true
     },    
     // with auth
-    _userId: {
-        type: Types.ObjectId,
-        required: true
+    "_userId": {
+        "type": Types.ObjectId,
+        "required": true
     }
 });
 

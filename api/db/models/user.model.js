@@ -15,52 +15,53 @@ const {
 const jwtSecret = "80r12a98n41d02o94m8234s12t34r31i40n33g";
 
 const UserSchema = new Schema({
-    email: {
-        type: String,
-        required: true,
-        minlength: 1,
-        trim: true,
-        unique: true
+    "email": {
+        "type": String,
+        "required": true,
+        "minlength": 1,
+        "trim": true,
+        "unique": true
     },
-    password: {
-        type: String,
-        required: true,
-        minlength: 5,
+    "password": {
+        "type": String,
+        "required": true,
+        "minlength": 5
     },
-    sessions: [{
-        token: {
-            type: String,
-            required: true
+    "sessions": [
+{
+        "token": {
+            "type": String,
+            "required": true
         },
-        expiresAt: {
-            type: Number,
-            required: true
+        "expiresAt": {
+            "type": Number,
+            "required": true
         }
-    }]
+    }
+]
 });
 
 //------- INSTANCE METHODS ------- //
 
 UserSchema.methods.toJSON = () => {
-    const user = this;
-    const userObject = user.toObject();
+    const userObject = this.toObject();
 
     //Return the document except password and session
-    return _.omit(userObject, ['password', 'sessions']);
+    return _.omit(userObject, [
+        'password',
+        'sessions'
+    ]);
 }
 
+// eslint-disable-next-line require-await
 UserSchema.methods.generateAccessAuthToken = async function () {
-    const user = this;
     //Create JSON Web Token and return it
-    try {
-        return await sign({
-            _id: user._id.toHexString()
-        }, jwtSecret, {
-            expiresIn: "15m"
-        });
-    } catch (err) {
-        throw err;
-    }
+    return sign({
+        "_id": this._id.toHexString()
+    }, jwtSecret, {
+        "expiresIn": "15m"
+    });
+
 }
 
 //This method willl generate a random 64 Byte Hex string 
@@ -70,14 +71,13 @@ UserSchema.methods.generateRefreshAuthToken = async () => {
 }
 
 UserSchema.methods.createSession = async function () {
-    let user = this;
 
     try {
-        let refreshToken = await user.generateRefreshAuthToken()
-        await saveSessionToDatabase(user, refreshToken);
+        let refreshToken = await this.generateRefreshAuthToken()
+        await saveSessionToDatabase(this, refreshToken);
         return refreshToken;
     } catch (err) {
-        throw new Error('Failed to save session to databse.\n' + err)
+        throw new Error(`Failed to save session to databse.\n${err}`)
     }
 }
 
@@ -87,27 +87,30 @@ UserSchema.statics.getJWTSecret = () => {
     return jwtSecret;
 }
 
+// eslint-disable-next-line require-await
 UserSchema.statics.findByIdAndToken = async function (_id, token) {
     //finds user by id and token
     //used in auth middleware (verifySession)
-    const User = this;
-    return await User.findOne({
+    return this.findOne({
         _id,
         'sessions.token': token
     });
 }
 
 UserSchema.statics.findByCredentials = async function (email, password) {
-    let user = this;
 
     try {
-        let retrieved_user = await user.findOne({
+        let retrieved_user = await this.findOne({
             email
         });
-        if (!retrieved_user) throw new Error("No User Found.");
-        if (await compare(password, user.password))
-            return user
-        else throw new Error();
+        if (!retrieved_user) {
+            throw new Error("No User Found.");
+        }
+        if (await compare(password, this.password)) {
+            return this
+        } else {
+            throw new Error();
+        }
     } catch (err) {
         throw new Error(err);
     }
@@ -128,15 +131,14 @@ UserSchema.statics.hasRefreshTokenExpired = (expiresAt) => {
 //----- MIDDLEWARE METHODS ------- //
 //before a user document is saved, we hash the password
 UserSchema.pre('save', async function (next) {
-    let user = this;
     let costFactor = 10; //how long it takes to hash our passwords
 
-    if (user.isModified('password')) {
+    if (this.isModified('password')) {
         //if the password has been changed or edited, run this code
         //generate salt and hash password
         let salt = await genSalt(costFactor);
-        let hash = await hash(user.password, salt)
-        user.password = hash;
+        let pswd_hash = await hash(this.password, salt)
+        this.password = pswd_hash;
         next();
     } else {
         next();
@@ -148,21 +150,24 @@ let saveSessionToDatabase = async (user, refreshToken) => {
     //save session to db
     let expiresAt = generateRefreshTokenExpiryTime();
 
-    user.sessions.push({'token': refreshToken, expiresAt });
+    user.sessions.push({
+        'token': refreshToken,
+        expiresAt
+    });
 
     //new token is pushed to sessions array, now we have to save user document to db
     try {
         await user.save()
         return refreshToken()
-    } catch(e) {
+    } catch (e) {
         throw new Error(e);
     }
 }
 
 let generateRefreshTokenExpiryTime = () => {
     let daysUntilExpire = "10";
-    let secondsUntilExpire = ((daysUntilExpire * 24) * 60) * 60;
-    return ((Date.now() / 1000) + secondsUntilExpire);
+    let secondsUntilExpire = daysUntilExpire * 24 * 60 * 60;
+    return Date.now() / 1000 + secondsUntilExpire;
 }
 
 const User = model('User', UserSchema);
